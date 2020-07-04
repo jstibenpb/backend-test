@@ -4,12 +4,12 @@ const controller = require('./controller/index');
 
 const router = express.Router();
 
-router.post('/api/v1/newUser', (req, res) => {
-  controller.newUser(res, req.body);
+router.post('/api/v1/signup', (req, res) => {
+  controller.signUp(res, req.body);
 });
 
-router.get('/api/v1/list', (req, res) => {
-  controller.listUser(res, req.query);
+router.post('/api/v1/login', (req, res) => {
+  controller.logIn(res, req.body);
 });
 
 module.exports = router;

@@ -1,10 +1,13 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const expressip = require('express-ip');
 
 const app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+
+app.use(expressip().getIpInfoMiddleware);
 
 app.use((req, res, next) => {
   // Website you wish to allow to connect
@@ -27,6 +30,20 @@ app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Credentials', true);
 
   // Pass to next layer of middleware
+  next();
+});
+
+app.use((req, res, next) => {
+  req.requestInfo = {
+    userData: {
+      ip: req.ipInfo.ip,
+      city: req.ipInfo.city,
+      country: req.ipInfo.country,
+      region: req.ipInfo.region,
+    },
+    method: req.method,
+    originalUrl: req.originalUrl,
+  };
   next();
 });
 
